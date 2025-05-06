@@ -13,7 +13,8 @@ import {
   Card,
   Portal,
   Modal,
-  Button
+  Button,
+  Divider
 } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { database } from '@/db';
@@ -21,6 +22,7 @@ import Book from '@/db/models/books';
 import * as Sort from '@/functions/sort';
 import SortMenu from '@/components/SortMenu';
 import { openReader } from '@/functions/readerFunction';
+import CardTitle from 'react-native-paper/lib/typescript/components/Card/CardTitle';
 
 export default function BookshelfScreen() {
   const [books, setBooks] = React.useState<Book[]>([]);
@@ -152,11 +154,22 @@ export default function BookshelfScreen() {
       />
       {/* Modal for long press action */}
       <Portal>
-        <Modal visible={bookPanelVisible} onDismiss={()=> setBookPanelVisible(false)} contentContainerStyle={styles.card}>
+        <Modal 
+          visible={bookPanelVisible} 
+          onDismiss={()=> setBookPanelVisible(false)} 
+          //contentContainerStyle={styles.card}
+          style={styles.optionOverlay}
+        >
           <Card
             style={styles.card}>
+            <Card.Title
+              title="Options"
+            />
+            <Divider />
             <Button
               mode="text"
+              icon="trash-can"
+              style={{paddingHorizontal: 10, alignContent:'flex-start'}}
               onPress={() => {
                 setBookPanelVisible(false)
               database.write(async () => {
@@ -183,6 +196,11 @@ const styles = StyleSheet.create({
   card: {
     alignItems: 'center',
     flexDirection: 'row',
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+  },
+  optionOverlay:{
+    alignItems: 'center',
   },
   cover: {
     height: '100%',
